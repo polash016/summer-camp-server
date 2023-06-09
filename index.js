@@ -34,6 +34,7 @@ async function run() {
 
     const classCollection = client.db('schoolDb').collection('classes');
     const instructorsCollection = client.db('schoolDb').collection('instructors');
+    const selectedClassCollection = client.db('schoolDb').collection('selectedClass');
 
 
 
@@ -48,6 +49,13 @@ async function run() {
 
     app.get('/instructors', async(req, res) => {
         const result = await instructorsCollection.find().toArray();
+        res.send(result)
+    })
+
+    //selected class
+    app.post('/selectedClass', async(req, res) => {
+        const course = req.body;
+        const result = await selectedClassCollection.insertOne(course)
         res.send(result)
     })
 

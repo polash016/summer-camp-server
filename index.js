@@ -35,12 +35,28 @@ async function run() {
     const classCollection = client.db('schoolDb').collection('classes');
     const instructorsCollection = client.db('schoolDb').collection('instructors');
     const selectedClassCollection = client.db('schoolDb').collection('selectedClass');
+    const usersCollection = client.db('schoolDb').collection('users');
 
 
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
+
+
+    
+
+    app.post('/users', async(req,res) => {
+        const user = req.body;
+        const query = {email: user.email};
+        const existingUser = await usersCollection.findOne(query);
+        if(existingUser){
+            return res.send({message: 'User Already Exists'})
+        }
+        const result = await usersCollection.insertOne(user);
+        res.send(result)
+    })
+
 
     app.get('/classes', async(req, res) => {
         const result = await classCollection.find().sort({enrolled_students: -1}).toArray();

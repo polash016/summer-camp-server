@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const { ObjectId } = require("mongodb");
 require('dotenv').config();
 const port = process.env.PORT || 5000;
 
@@ -53,6 +54,7 @@ async function run() {
         const user = req.body;
         const query = {email: user.email};
         const existingUser = await usersCollection.findOne(query);
+        console.log(user)
         if(existingUser){
             return res.send({message: 'User Already Exists'})
         }
@@ -79,6 +81,12 @@ async function run() {
     app.post('/selectedClass', async(req, res) => {
         const course = req.body;
         const result = await selectedClassCollection.insertOne(course)
+        res.send(result)
+    })
+    app.delete('/selectedClass/:id', async(req, res) => {
+        const id = req.params.id;
+        const query = {_id: new ObjectId(id)};
+        const result = await selectedClassCollection.deleteOne(query);
         res.send(result)
     })
 

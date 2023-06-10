@@ -74,7 +74,17 @@ async function run() {
         res.send(result)
     })
     
-
+    app.patch('/users/instructor/:id', async(req, res) => {
+        const id = req.params.id;
+        const query = {_id: new ObjectId(id)};
+        const updatedDoc = {
+            $set: {
+                role: 'instructor'
+            }
+        };
+        const result = await usersCollection.updateOne(query, updatedDoc);
+        res.send(result)
+    })
 
     app.get('/classes', async(req, res) => {
         const result = await classCollection.find().sort({enrolled_students: -1}).toArray();

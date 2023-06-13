@@ -217,7 +217,7 @@ async function run() {
       }
     );
 
-    app.put('/classes/instructor/:id', async(req, res) => {
+    app.put('/feedback/:id', async(req, res) => {
         const id = req.params.id;
         const {feedback} = req.body;
         console.log(feedback)
@@ -228,7 +228,7 @@ async function run() {
 
     })
 
-    app.patch("/classes/instructor/:id", async (req, res) => {
+    app.patch("/classes/instructor/:id",verifyJWT, verifyAdmin, async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const updatedDoc = {

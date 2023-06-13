@@ -217,6 +217,17 @@ async function run() {
       }
     );
 
+    app.put('/classes/instructor/:id', async(req, res) => {
+        const id = req.params.id;
+        const {feedback} = req.body;
+        console.log(feedback)
+        const query = {_id: new ObjectId(id)};
+        const update = { $set: { feedback } };
+        const result = await classCollection.updateOne(query, update)
+        res.send(result)
+
+    })
+
     app.patch("/classes/instructor/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
